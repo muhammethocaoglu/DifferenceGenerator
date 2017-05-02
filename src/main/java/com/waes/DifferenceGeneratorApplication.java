@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration;
 import org.springframework.context.annotation.PropertySource;
 
-@SpringBootApplication(scanBasePackages = {"com.waes"}, exclude = {VelocityAutoConfiguration.class, DataSourceAutoConfiguration.class,
-		HibernateJpaAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.waes"}, exclude = {VelocityAutoConfiguration.class})
 @PropertySource("classpath:application-db.properties")
 public class DifferenceGeneratorApplication {
 

@@ -1,0 +1,64 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+sourceSets {
+	intTest {
+		java {
+			compileClasspath += main.output + test.output
+			runtimeClasspath += main.output + test.output
+			srcDir file('src/intTest/java')
+		}
+		resources.srcDir file('src/intTest/resources')
+	}
+
+
+}
+
+configurations {
+    intTestCompile.extendsFrom testCompile
+    intTestRuntime.extendsFrom testRuntime
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.apache.commons:commons-lang3:3.0')
+    compile('com.google.code.gson:gson:2.8.0')
+	compile('org.projectlombok:lombok:1.16.10')
+	runtime('org.postgresql:postgresql')
+    testCompile('org.apache.commons:commons-lang3:3.0')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile ("org.testng:testng:6.11")
+	testCompile ("org.mockito:mockito-core:1.+")
+	testCompile ("com.h2database:h2")
+}
+
+task intTest(type: Test) {
+    testClassesDir = sourceSets.intTest.output.classesDir
+    classpath = sourceSets.intTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+check.dependsOn intTest
+intTest.mustRunAfter test
